@@ -1,0 +1,90 @@
+import 'package:flutter/material.dart';
+
+import '../core/app_images/app_images.dart';
+import '../widgets/card_item_image_widget.dart';
+import '../widgets/card_item_widget.dart';
+
+class GardenScreen extends StatefulWidget {
+  const GardenScreen({super.key, required this.sendData});
+  final void Function(String data) sendData;
+
+  @override
+  State<GardenScreen> createState() => _GardenScreenState();
+}
+
+class _GardenScreenState extends State<GardenScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Garden',
+          style: TextStyle(
+            color: Color(0xff000000),
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      backgroundColor: Color(0xffF5F5F5),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 16),
+                SizedBox(height: 42),
+                CardItemImageWidget(
+                  image: AppImages.imageHomeScreen,
+                  title: "Soil Data",
+                  number: "42%",
+                  subtitle: "Soil Moisture",
+                ),
+                SizedBox(height: 30),
+                CardItemImageWidget(
+                  image: AppImages.imageHomeScreen1,
+                  title: "Temperature",
+                  number: "27°C",
+                  subtitle: "Room Temperature",
+                ),
+                SizedBox(height: 60),
+                Center(
+                  child: Wrap(
+                    runSpacing: 20,
+                    spacing: 20,
+                    children: [
+                      CardItemWidget(
+                        title: 'Fan',
+                        iconDown: const Icon(Icons.power_settings_new),
+                        image: 'assets/icons/Vector.png',
+                        char: 'f',
+                        sendData: widget.sendData,
+                      ),
+                      CardItemWidget(
+                        title: 'irrigation',
+                        iconDown: const Icon(Icons.power_settings_new),
+                        image: 'assets/icons/iconoir_watering-soil.png',
+                        char: 'i',
+                        sendData: widget.sendData,
+                      ),
+                      CardItemWidget(
+                        title: 'Smart light 1',
+                        iconDown: Icon(Icons.power_settings_new),
+                        image: 'assets/icons/icons8_idea.png',
+                        char: 'l',
+                        sendData: widget.sendData,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 60),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
