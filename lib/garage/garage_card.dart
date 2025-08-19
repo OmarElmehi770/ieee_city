@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
-class GarageCard extends StatefulWidget {
-  const GarageCard({super.key, required this.sendData,});
-  final void Function(String) sendData;
+import '../on_boarding/full_connection.dart';
 
+class GarageCard extends StatefulWidget {
+  const GarageCard({super.key,
+    required this.sendData,
+  });
+  final void Function(String data) sendData;
   
 
   @override
@@ -35,8 +38,8 @@ class _GarageCardState extends State<GarageCard> {
                     onPressed: () {
                       setState(() {
                         garageOpen = !garageOpen;
+                        BluetoothConnectionScreenState.sendData("Garage_ON");
                       });
-                      widget.sendData('g');
                     },
                     icon: Icon(
                       Icons.power_settings_new,

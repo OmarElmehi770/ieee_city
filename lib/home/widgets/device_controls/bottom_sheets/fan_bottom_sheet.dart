@@ -281,7 +281,7 @@ class _FanBottomSheetState extends State<FanBottomSheet>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Fan',
+                  'Manual Control',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

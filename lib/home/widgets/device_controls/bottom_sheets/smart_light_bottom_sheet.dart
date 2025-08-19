@@ -124,7 +124,7 @@ class _SmartLightBottomSheetState extends State<SmartLightBottomSheet>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Smart Light',
+                  'Manual control',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

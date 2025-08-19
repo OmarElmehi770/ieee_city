@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../on_boarding/full_connection.dart';
+
 class CardItemWidget extends StatefulWidget {
   final String image;
   final Icon iconDown;
   final String title;
   final String char;
-  final void Function(String data) sendData;
 
   const CardItemWidget({
     super.key,
@@ -13,7 +14,6 @@ class CardItemWidget extends StatefulWidget {
     required this.image,
     required this.iconDown,
     required this.char,
-    required this.sendData,
   });
 
   @override
@@ -58,7 +58,7 @@ class _CardItemWidgetState extends State<CardItemWidget> {
                 setState(() {
                   isValue = !isValue;
                 });
-                widget.sendData(widget.char);
+                BluetoothConnectionScreenState.sendData(widget.char);
               },
               icon: Icon(
                 Icons.power_settings_new,

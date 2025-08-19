@@ -12,13 +12,14 @@ class BluetoothConnectionScreen extends StatefulWidget {
 
   @override
   State<BluetoothConnectionScreen> createState() =>
-      _BluetoothConnectionScreenState();
+      BluetoothConnectionScreenState();
 }
 
-class _BluetoothConnectionScreenState extends State<BluetoothConnectionScreen>
+class BluetoothConnectionScreenState extends State<BluetoothConnectionScreen>
     with SingleTickerProviderStateMixin {
+
   BluetoothConnection? connection;
-  bool isConnected = false;
+  bool isConnected = true;
   BluetoothDevice? selectedDevice;
 
   List<BluetoothDevice> bondedDevices = [];
@@ -94,6 +95,8 @@ class _BluetoothConnectionScreenState extends State<BluetoothConnectionScreen>
   Future<void> connectToDevice(BluetoothDevice device) async {
     try {
       connection = await BluetoothConnection.toAddress(device.address);
+      BluetoothConnectionScreenState.setConnection(connection!);
+      connection = await BluetoothConnection.toAddress(device.address);
       print('Connected to the device');
 
       setState(() {
@@ -128,13 +131,20 @@ class _BluetoothConnectionScreenState extends State<BluetoothConnectionScreen>
   //     connection!.output.add(Uint8List.fromList(message.codeUnits));
   //   }
   // }
-  void sendData(String data) {
-    if (connection != null && connection!.isConnected) {
-      connection!.output.add(Uint8List.fromList(data.codeUnits));
-      log(data);
-      connection!.output.allSent;
-    }
+  static BluetoothConnection? _connection;
+
+  static void setConnection(BluetoothConnection connection) {
+    _connection = connection;
   }
+
+  static void sendData(String data) {
+    if (_connection != null && _connection!.isConnected) {
+      _connection!.output.add(Uint8List.fromList(data.codeUnits));
+      _connection!.output.allSent;
+    }
+    log("📤 Sent: $data");
+  }
+
 
   @override
   void dispose() {
@@ -264,3 +274,4 @@ class _BluetoothConnectionScreenState extends State<BluetoothConnectionScreen>
     );
   }
 }
+

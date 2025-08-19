@@ -24,8 +24,8 @@ class CustomDeviceContainer extends StatelessWidget {
           _openPopupMenu(context, choice);
         },
         child: Container(
-          height: 110,
-          width: 110,
+          height: 164,
+          width: 164,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(10),
@@ -34,11 +34,11 @@ class CustomDeviceContainer extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(image, width: 70, height: 70),
+              Image.asset(image, width: 90, height: 90),
               SizedBox(height: 10),
               Text(
                 title,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ],

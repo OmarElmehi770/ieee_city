@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../on_boarding/full_connection.dart';
 import '../core/app_images/app_images.dart';
 import '../widgets/card_item_image_widget.dart';
 import '../widgets/card_item_widget.dart';
 
 class GardenScreen extends StatefulWidget {
-  const GardenScreen({super.key, required this.sendData});
+  const GardenScreen({super.key, required this.sendData,required this.recievedMessage,});
   final void Function(String data) sendData;
+  final String recievedMessage;
 
   @override
   State<GardenScreen> createState() => _GardenScreenState();
@@ -60,21 +62,18 @@ class _GardenScreenState extends State<GardenScreen> {
                         iconDown: const Icon(Icons.power_settings_new),
                         image: 'assets/icons/Vector.png',
                         char: 'f',
-                        sendData: widget.sendData,
                       ),
                       CardItemWidget(
                         title: 'irrigation',
                         iconDown: const Icon(Icons.power_settings_new),
                         image: 'assets/icons/iconoir_watering-soil.png',
                         char: 'i',
-                        sendData: widget.sendData,
                       ),
                       CardItemWidget(
                         title: 'Smart light 1',
                         iconDown: Icon(Icons.power_settings_new),
                         image: 'assets/icons/icons8_idea.png',
                         char: 'l',
-                        sendData: widget.sendData,
                       ),
                     ],
                   ),

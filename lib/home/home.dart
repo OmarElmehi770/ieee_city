@@ -1,6 +1,8 @@
+import 'package:animated_button/animated_button.dart';
 import 'package:flutter/material.dart';
 import '../garage/garage_screen.dart';
 import '../garden/screens/garden_screen.dart';
+import '../on_boarding/full_connection.dart';
 import '../rooms&halls/views/halls.dart';
 import '../rooms&halls/views/rooms.dart';
 import 'Widgets1/custom_container.dart';
@@ -20,8 +22,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  bool x = true;
-  bool y = true;
+  bool security = true;
+  bool powerSaving = true;
+  bool securityAlarm = true;
+  String password = '';
+  String correctPassword = "124CCA" ;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +76,7 @@ class _HomeState extends State<Home> {
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          x = !x;
+                          security = !security;
                         });
                       },
                       child: AnimatedContainer(
@@ -78,9 +84,9 @@ class _HomeState extends State<Home> {
                         width: 100,
                         height: 50,
                         child: Icon(
-                          x ? Icons.toggle_on : Icons.toggle_off,
+                          security ? Icons.toggle_on : Icons.toggle_off,
                           size: 50,
-                          color: x ? const Color(0xFF0207FD) : Colors.grey,
+                          color: security ? const Color(0xFF0207FD) : Colors.grey,
                         ),
                       ),
                     ),
@@ -122,7 +128,7 @@ class _HomeState extends State<Home> {
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          y = !y;
+                          powerSaving = !powerSaving;
                         });
                       },
                       child: AnimatedContainer(
@@ -130,9 +136,9 @@ class _HomeState extends State<Home> {
                         width: 100,
                         height: 50,
                         child: Icon(
-                          y ? Icons.toggle_on : Icons.toggle_off,
+                          powerSaving ? Icons.toggle_on : Icons.toggle_off,
                           size: 50,
-                          color: y ? const Color(0xFF0207FD) : Colors.grey,
+                          color: powerSaving ? const Color(0xFF0207FD) : Colors.grey,
                         ),
                       ),
                     ),
@@ -140,7 +146,60 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            SizedBox(height: 520),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.4),
+                      spreadRadius: 2,
+                      blurRadius: 6,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                width: double.infinity,
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        'Security Alarm',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          decoration: TextDecoration.none,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          securityAlarm = !securityAlarm;
+                          BluetoothConnectionScreenState.sendData("s");
+                        });
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        width: 100,
+                        height: 50,
+                        child: Icon(
+                          securityAlarm ? Icons.toggle_on : Icons.toggle_off,
+                          size: 50,
+                          color: securityAlarm ? const Color(0xFF0207FD) : Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 480),
             ListTile(
               title: Text(
                 'Back to connection',
@@ -233,29 +292,368 @@ class _HomeState extends State<Home> {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  "Running Devices",
+                  "",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder:
+                          (context) => StatefulBuilder(
+                        builder:
+                            (
+                            BuildContext context,
+                            void Function(void Function()) setState,
+                            ) => AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              15,
+                            ),
+                          ),
+                          backgroundColor: Colors.grey,
+                          content: Container(
+                            height: 370,
+                            width: double.infinity,
+                            child: Column(
+                              spacing: 12,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                    BorderRadius.circular(15),
+                                  ),
+                                  height: 60,
+                                  width: double.infinity,
+                                  child: Center(
+                                    child: Text(
+                                      password,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 30,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment
+                                      .spaceEvenly,
+                                  children: [
+                                    btn(
+                                      text: '<-',
+                                      onTap: () {
+                                        setState(() {
+                                          password = password
+                                              .substring(
+                                            0,
+                                            password.length -
+                                                1,
+                                          );
+                                        });
+                                      },
+                                      btnColor: Colors.red,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                    btn(
+                                      text: 'Reset',
+                                      onTap: () {
+
+                                      },
+                                      btnColor: Colors.blue,
+                                      textColor: Colors.white,
+                                      btnWidth: 100,
+                                    ),
+                                    btn(
+                                      text: '✔️',
+                                      onTap: () {
+                                        setState((){
+                                          if (password == correctPassword ){
+                                            BluetoothConnectionScreenState.sendData(password);
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text("✅ Door Opened"),
+                                                duration: Duration(seconds: 2),
+                                              ),
+                                            );
+                                            password = '' ;
+                                          }else {
+                                            password = '' ;
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text("❌ Wrong Password"),
+                                                duration: Duration(seconds: 2),
+                                              ),
+                                            );
+                                          }
+                                        });
+                                      },
+                                      btnColor: Colors.red,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment
+                                      .spaceEvenly,
+                                  children: [
+                                    btn(
+                                      text: '1',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += '1':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.blue,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                    btn(
+                                      text: '2',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += '2':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.blue,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                    btn(
+                                      text: '3',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += '3':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.blue,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                    btn(
+                                      text: 'A',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += 'A':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.red,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment
+                                      .spaceEvenly,
+                                  children: [
+                                    btn(
+                                      text: '4',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += '4':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.blue,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                    btn(
+                                      text: '5',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += '5':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.blue,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                    btn(
+                                      text: '6',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += '6':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.blue,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                    btn(
+                                      text: 'B',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += 'B':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.red,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment
+                                      .spaceEvenly,
+                                  children: [
+                                    btn(
+                                      text: '7',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += '7':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.blue,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                    btn(
+                                      text: '8',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += '8':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.blue,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                    btn(
+                                      text: '9',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += '9':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.blue,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                    btn(
+                                      text: 'C',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += 'C':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.red,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment
+                                      .spaceEvenly,
+                                  children: [
+                                    btn(
+                                      text: '*',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += '*':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.red,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                    btn(
+                                      text: '0',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += '0':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.blue,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                    btn(
+                                      text: '#',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += '#':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.red,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                    btn(
+                                      text: 'D',
+                                      onTap: () {
+                                        password.length<6?
+                                        password += 'D':null;
+                                        setState(() {});
+                                      },
+                                      btnColor: Colors.red,
+                                      textColor: Colors.white,
+                                      btnWidth: 50,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Color(0xFFD9D9D9),
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(width: 20),
+                        Expanded(
+                          child: Text(
+                            'Enter Home Password',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Icon(Icons.arrow_forward, size: 30),
+                        SizedBox(width: 10),
+                      ],
+                    ),
+                  ),
+                ),
+
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    children: [
-                      CustomDeviceContainer(
-                        title: "Smart light",
-                        image: 'assets/images/idea_colored.png',
-                        choice: 1,
-                      ),
-                      CustomDeviceContainer(
-                        title: "Fan",
-                        image: 'assets/images/fan_colored.png',
-                        choice: 2,
-                      ),
-                      CustomDeviceContainer(
-                        title: "Smart TV",
-                        image: 'assets/images/responsive_colored.png',
-                        choice: 3,
-                      ),
-                    ],
+                    // children: [
+                    //   CustomDeviceContainer(
+                    //     title: "Smart light",
+                    //     image: 'assets/images/idea_colored.png',
+                    //     choice: 1,
+                    //   ),
+                    //   CustomDeviceContainer(
+                    //     title: "Fan",
+                    //     image: 'assets/images/fan_colored.png',
+                    //     choice: 2,
+                    //   ),
+                    //   CustomDeviceContainer(
+                    //     title: "Smart TV",
+                    //     image: 'assets/images/responsive_colored.png',
+                    //     choice: 3,
+                    //   ),
+                    //],
                   ),
                 ),
                 SizedBox(height: 20),
@@ -263,28 +661,28 @@ class _HomeState extends State<Home> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => Rooms()),
+                      MaterialPageRoute(builder: (_) => Rooms(sendData: widget.sendData, recievedMessage: widget.recievedMessage,)),
                     );
                   },
                   child: CustomContainer(
-                    title1: 'Rooms',
-                    title2: "3 Rooms",
+                    title1: 'Room',
+                    title2: "5 devices",
                     image: 'assets/images/room1.jpg',
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => Halls()),
-                    );
-                  },
-                  child: CustomContainer(
-                    title1: 'Halls',
-                    title2: "2 Halls",
-                    image: 'assets/images/room2.jpg',
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (_) => Halls()),
+                //     );
+                //   },
+                //   child: CustomContainer(
+                //     title1: 'Halls',
+                //     title2: "2 Halls",
+                //     image: 'assets/images/room2.jpg',
+                //   ),
+                // ),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -309,7 +707,7 @@ class _HomeState extends State<Home> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => GardenScreen(sendData: widget.sendData),
+                        builder: (_) => GardenScreen(sendData: widget.sendData, recievedMessage: widget.recievedMessage,),
                       ),
                     );
                   },
@@ -326,4 +724,29 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+}
+
+
+Widget btn({
+  required String text,
+  required Function() onTap,
+  required Color btnColor,
+  required Color textColor,
+  required double btnWidth,
+}) {
+  return AnimatedButton(
+    onPressed: onTap,
+    color: btnColor,
+    width: btnWidth,
+    height: 50,
+    shadowDegree: ShadowDegree.dark,
+    child: Text(
+      text,
+      style: TextStyle(
+        color: textColor,
+        fontSize: 17,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  );
 }
