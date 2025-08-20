@@ -181,20 +181,13 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         setState(() {
                           securityAlarm = !securityAlarm;
-                          BluetoothConnectionScreenState.sendData("s");
+                          BluetoothConnectionScreenState.sendData("STOP_ALERT");
+
                         });
                       },
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        width: 100,
-                        height: 50,
-                        child: Icon(
-                          securityAlarm ? Icons.toggle_on : Icons.toggle_off,
-                          size: 50,
-                          color: securityAlarm ? const Color(0xFF0207FD) : Colors.grey,
-                        ),
-                      ),
+                      child: Text("Stop",style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 18,),),
                     ),
+                    SizedBox(),
                   ],
                 ),
               ),

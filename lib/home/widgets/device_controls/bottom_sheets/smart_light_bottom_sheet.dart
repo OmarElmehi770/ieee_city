@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../on_boarding/full_connection.dart';
 import 'dismissible_bottom_sheet.dart';
 import '../../../models/device_state.dart';
 import '../../../utils/device_state_manager.dart';
@@ -85,8 +86,10 @@ class _SmartLightBottomSheetState extends State<SmartLightBottomSheet>
       _lightState.isOn = value;
       if (value) {
         _animationController.forward();
+        BluetoothConnectionScreenState.sendData("LIGHT_ON");
       } else {
         _animationController.reverse();
+      BluetoothConnectionScreenState.sendData("LIGHT_OFF");
       }
     });
 
@@ -98,7 +101,7 @@ class _SmartLightBottomSheetState extends State<SmartLightBottomSheet>
     setState(() {
       _lightState.brightness = value;
     });
-
+    BluetoothConnectionScreenState.sendData("brightness:${value.toInt()}");
     // Save state
     _stateManager.saveLightState(_lightState);
   }
@@ -124,7 +127,7 @@ class _SmartLightBottomSheetState extends State<SmartLightBottomSheet>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Manual control',
+                  'Lights',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -148,6 +151,7 @@ class _SmartLightBottomSheetState extends State<SmartLightBottomSheet>
               child: AnimatedBuilder(
                 animation: _animationController,
                 builder: (context, child) {
+                  final normalizedBrightness = _lightState.brightness / 255.0;
                   return Container(
                     width: isSmallScreen ? 60 : 80,
                     height: isSmallScreen ? 60 : 80,
@@ -159,13 +163,13 @@ class _SmartLightBottomSheetState extends State<SmartLightBottomSheet>
                               ? [
                                 BoxShadow(
                                   color: Colors.blue.withAlpha(
-                                    (76 + (_lightState.brightness * 127))
+                                    (76 + (normalizedBrightness * 127))
                                         .toInt(),
                                   ),
                                   blurRadius:
-                                      20 + (_lightState.brightness * 30),
+                                      20 + (normalizedBrightness * 30),
                                   spreadRadius:
-                                      5 + (_lightState.brightness * 10),
+                                      5 + (normalizedBrightness * 10),
                                 ),
                               ]
                               : null,

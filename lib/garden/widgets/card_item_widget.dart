@@ -58,7 +58,13 @@ class _CardItemWidgetState extends State<CardItemWidget> {
                 setState(() {
                   isValue = !isValue;
                 });
-                BluetoothConnectionScreenState.sendData(widget.char);
+                isValue
+                    ? BluetoothConnectionScreenState.sendData(
+                      "${widget.char}_ON",
+                    )
+                    : BluetoothConnectionScreenState.sendData(
+                      "${widget.char}_OFF",
+                    );
               },
               icon: Icon(
                 Icons.power_settings_new,

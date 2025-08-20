@@ -60,12 +60,13 @@ class BrightnessSlider extends StatelessWidget {
             thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
             overlayShape: const RoundSliderOverlayShape(overlayRadius: 16),
           ),
-          child: Slider(value: value, onChanged: isEnabled ? onChanged : null),
+          child: Slider(value: value, onChanged: isEnabled ? onChanged : null,min: 0,
+            max: 255,),
         ),
         const SizedBox(height: 8),
         Center(
           child: Text(
-            '${(value * 100).toInt()}%',
+            '${((value / 255) * 100).toInt()}%',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,

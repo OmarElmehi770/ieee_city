@@ -38,7 +38,11 @@ class _GarageCardState extends State<GarageCard> {
                     onPressed: () {
                       setState(() {
                         garageOpen = !garageOpen;
-                        BluetoothConnectionScreenState.sendData("Garage_ON");
+                        if(garageOpen){
+                          BluetoothConnectionScreenState.sendData("GARAGE_OPEN");
+                        }else{
+                          BluetoothConnectionScreenState.sendData("GARAGE_CLOSE");
+                        }
                       });
                     },
                     icon: Icon(

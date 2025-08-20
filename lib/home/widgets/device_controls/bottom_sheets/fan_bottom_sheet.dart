@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../../../on_boarding/full_connection.dart';
 import 'dismissible_bottom_sheet.dart';
 import '../../../models/device_state.dart';
 import '../../../utils/device_state_manager.dart';
@@ -109,10 +110,12 @@ class _FanBottomSheetState extends State<FanBottomSheet>
   void _startFanAnimation() {
     _animationController.repeat();
     _updateFanAnimationSpeed();
+    BluetoothConnectionScreenState.sendData("AUTO_FAN_OFF");
   }
 
   void _stopFanAnimation() {
     _animationController.stop();
+    BluetoothConnectionScreenState.sendData("AUTO_FAN_ON");
   }
 
   void _updateFanAnimationSpeed() {
@@ -120,12 +123,15 @@ class _FanBottomSheetState extends State<FanBottomSheet>
     switch (_fanState.speedLevel) {
       case 1:
         _animationController.duration = const Duration(seconds: 3);
+        BluetoothConnectionScreenState.sendData("FAN:85");
         break;
       case 2:
         _animationController.duration = const Duration(seconds: 2);
+        BluetoothConnectionScreenState.sendData("FAN:170");
         break;
       case 3:
         _animationController.duration = const Duration(seconds: 1);
+        BluetoothConnectionScreenState.sendData("FAN:255");
         break;
     }
 
@@ -299,7 +305,6 @@ class _FanBottomSheetState extends State<FanBottomSheet>
             ),
 
             SizedBox(height: isSmallScreen ? 20 : 30),
-
             // Fan Speed Options
             SizedBox(
               height: isSmallScreen ? 120 : 140,
